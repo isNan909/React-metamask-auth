@@ -1,11 +1,13 @@
 import { useState } from 'react';
-import Web3 from "web3";
+import Web3 from 'web3';
 
 function App() {
   const [isConnected, setIsConnected] = useState(false);
-  const [connectedAccount, setConnectedAccount] = useState(null);
-  const [connectedBalance, setConnectedBalance] = useState(null);
-  const [connectedId, setConnectedId] = useState(null);
+  const [userinfo, setUserinfo] = useState({
+    account: '',
+    balance: '',
+    connctionid: '',
+  });
 
   const detectCurrentProvider = () => {
     let provider;
@@ -39,11 +41,13 @@ function App() {
         ethBalance = web3.utils.fromWei(ethBalance, 'ether'); //Convert balance to wei
         if (userAccount.length === 0) {
           console.log('please connect to meta mask');
-        } else if (userAccount[0] !== connectedAccount) {
+        } else if (userAccount[0] !== userinfo.account) {
           setIsConnected(true);
-          setConnectedAccount(userAccount[0]);
-          setConnectedBalance(ethBalance);
-          setConnectedId(chainId);
+          setUserinfo({
+            account: userAccount,
+            balance: ethBalance,
+            connctionid: chainId,
+          });
         }
       }
     } catch (err) {
@@ -61,13 +65,13 @@ function App() {
       </div>
       {isConnected && (
         <div>
-          You are connected to metamask. 
+          You are connected to metamask.
           <br />
-          Balance: {connectedBalance}
+          Balance: {userinfo.account}
           <br />
-          ConnectionID: {connectedId}
+          ConnectionID: {userinfo.balance}
           <br />
-          Connected Account: {connectedAccount}
+          Connected Account: {userinfo.connctionid}
         </div>
       )}
     </div>
