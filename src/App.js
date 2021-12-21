@@ -48,6 +48,12 @@ function App() {
     }
   };
 
+  const onDisconnect = () => {
+    window.localStorage.removeItem('userAccount');
+    setUserInfo({});
+    setIsConnected(false);
+  }
+
   const saveUserInfo = (ethBalance, account, chainId) => {
     const userAccount = {
       account: account,
@@ -64,9 +70,21 @@ function App() {
     <div className="App">
       React dApp authentication with Web3.js and Metamask
       <div>
-        <button onClick={onConnect}>Connect to MetaMask</button>
+        {!isConnected && (
+          <button onClick={onConnect}>Connect to MetaMask</button>
+        )}
       </div>
-      {isConnected && <div>You are connected to metamask.{userInfo.account}, {userInfo.balance}, {userInfo.connectionid}</div>}
+      {isConnected && (
+        <div>
+          <div>
+            You are connected to metamask.{userInfo.account}, {userInfo.balance}
+            , {userInfo.connectionid}
+          </div>
+          <div>
+            <button onClick={onDisconnect}>Disconnect</button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
