@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import Web3 from 'web3';
 
+import MetamaskLogo from './assets/metamask.svg';
+
 function App() {
   const [isConnected, setIsConnected] = useState(false);
   const [userInfo, setUserInfo] = useState({});
@@ -71,28 +73,48 @@ function App() {
       balance: ethBalance,
       connectionid: chainId,
     };
-    window.localStorage.setItem('userAccount', JSON.stringify(userAccount)); //or use a state management lib
+    window.localStorage.setItem('userAccount', JSON.stringify(userAccount)); //user persisted data
     const userData = JSON.parse(localStorage.getItem('userAccount'));
     setUserInfo(userData);
     setIsConnected(true);
   };
 
   return (
-    <div className="App">
-      React dApp authentication with Web3.js and Metamask
-      <div>
+    <div className="app">
+      <div className="app-header">
+        <h1>React dApp authentication with Web3.js and Metamask</h1>
+      </div>
+      <div className="app-wrapper">
         {!isConnected && (
-          <button onClick={onConnect}>Connect to MetaMask</button>
+          <div>
+            <img src={MetamaskLogo} alt="meta mask logo" />
+            <button className="app-buttons__login" onClick={onConnect}>
+              Connect to MetaMask
+            </button>
+          </div>
         )}
       </div>
       {isConnected && (
-        <div>
-          <div>
-            You are connected to metamask.{userInfo.account}, {userInfo.balance}
-            , {userInfo.connectionid}
+        <div className="app-wrapper">
+          <div className="app-details">
+            <h2>✅ You are connected to metamask.</h2>
+            <div className="app-account">
+              <span>Account number:</span>
+              {userInfo.account}
+            </div>
+            <div className="app-balance">
+              <span>Balance:</span>
+              {userInfo.balance}
+            </div>
+            <div className="app-connectionid">
+              <span>Connection ID:</span>
+              {userInfo.connectionid}
+            </div>
           </div>
           <div>
-            <button onClick={onDisconnect}>Disconnect</button>
+            <button className="app-buttons__logout" onClick={onDisconnect}>
+              Disconnect
+            </button>
           </div>
         </div>
       )}
